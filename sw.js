@@ -1,4 +1,4 @@
-var CACHE = 'court-strength-v12';
+var CACHE = 'court-strength-v13';
 var CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png'];
 
 self.addEventListener('install', function (e) {
@@ -33,6 +33,7 @@ self.addEventListener('fetch', function (e) {
   // App files: network first so updates land, falling back to cache offline.
   e.respondWith(
     fetch(req).then(function (res) {
+      if (!res || !res.ok) throw new Error('bad response');
       var copy = res.clone();
       caches.open(CACHE).then(function (c) { c.put(req, copy); });
       return res;
